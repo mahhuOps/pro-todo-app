@@ -29,9 +29,12 @@ const TodoContext = createContext<TodoContextType | undefined>(undefined)
 export function TodoProvider({ children }: { children: React.ReactNode }) {
   const [todos, setTodos] = useState<Todo[]>([])
   const [stats, setStats] = useState(todoStore.getStats())
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
     setTodos(todoStore.getTodos())
+    setStats(todoStore.getStats())
+    setHydrated(true)
   }, [])
 
   const addTodo = (todo: Omit<Todo, "id" | "createdAt" | "updatedAt">) => {
@@ -53,7 +56,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, updateTodo, deleteTodo, stats }}>{children}</TodoContext.Provider>
+    <TodoContext.Provider value={{ todos, addTodo, updateTodo, deleteTodo, stats }}>
+      {hydrated ? children : <div className="min-h-screen" />}
+    </TodoContext.Provider>
   )
 }
 

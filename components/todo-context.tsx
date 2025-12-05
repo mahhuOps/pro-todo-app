@@ -55,17 +55,25 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
     setStats(todoStore.getStats())
   }
 
+  if (!hydrated) {
+    return <div className="min-h-screen" />
+  }
+
   return (
-    <TodoContext.Provider value={{ todos, addTodo, updateTodo, deleteTodo, stats }}>
-      {hydrated ? children : <div className="min-h-screen" />}
-    </TodoContext.Provider>
+    <TodoContext.Provider value={{ todos, addTodo, updateTodo, deleteTodo, stats }}>{children}</TodoContext.Provider>
   )
 }
 
 export function useTodos() {
   const context = useContext(TodoContext)
   if (!context) {
-    throw new Error("useTodos must be used within TodoProvider")
+    return {
+      todos: [],
+      addTodo: () => {},
+      updateTodo: () => {},
+      deleteTodo: () => {},
+      stats: { total: 0, completed: 0, pending: 0, urgent: 0 },
+    }
   }
   return context
 }

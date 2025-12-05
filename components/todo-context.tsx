@@ -66,14 +66,15 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 
 export function useTodos() {
   const context = useContext(TodoContext)
-  if (!context) {
-    return {
-      todos: [],
-      addTodo: () => {},
-      updateTodo: () => {},
-      deleteTodo: () => {},
-      stats: { total: 0, completed: 0, pending: 0, urgent: 0 },
-    }
+
+  // Return default values when context doesn't exist (e.g., during SSR/prerendering)
+  const defaultValue: TodoContextType = {
+    todos: [],
+    addTodo: () => {},
+    updateTodo: () => {},
+    deleteTodo: () => {},
+    stats: { total: 0, completed: 0, pending: 0, urgent: 0 },
   }
-  return context
+
+  return context || defaultValue
 }

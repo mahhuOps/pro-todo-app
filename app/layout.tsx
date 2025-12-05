@@ -1,16 +1,15 @@
 import type React from "react"
-// ... existing code ...
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import { TodoProvider } from "@/components/todo-context"
+import { Providers } from "@/components/providers"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  // <CHANGE> Updated metadata for Todo App Pro Max
+  // Updated metadata for Todo App Pro Max
   title: "Todo App Pro Max",
   description: "A premium task management app with advanced features",
   generator: "v0.app",
@@ -41,8 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
-        {/* <CHANGE> Added TodoProvider for global state management */}
-        <TodoProvider>{children}</TodoProvider>
+        <Providers>{children}</Providers>
         <Analytics />
       </body>
     </html>
